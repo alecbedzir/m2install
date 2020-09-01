@@ -1623,7 +1623,7 @@ function afterDbInit()
 {
     local script_name=".after-db-init.sql"
     local script="$(getScriptDirectory)/$script_name"
-    if [ -f "$script" ]
+    if [ ! -f "$script" ]
     then
         script="$(getScriptDirectory)/../$script_name"
     fi
