@@ -1624,9 +1624,9 @@ function afterDbInit()
     local script=""
     if [[ "$MAGE_MODE" == "production" ]]
     then
-        script="$(getScriptDirectory)/after-db-init-production.sql"
+        script="$(getScriptDirectory)/.after-db-init-production.sql"
     else    
-        script="$(getScriptDirectory)/after-db-init.sql"
+        script="$(getScriptDirectory)/.after-db-init.sql"
     fi
     if [ -f "$script" ]
     then
