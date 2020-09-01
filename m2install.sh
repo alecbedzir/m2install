@@ -53,6 +53,7 @@ FORCE=
 MAGE_MODE=dev
 
 DEPLOY_THEMES=
+DEPLOY_LANGUAGES=
 
 BIN_PHP=php
 BIN_MAGE="-d memory_limit=2G bin/magento"
@@ -1145,7 +1146,12 @@ function deployStaticContent()
         themes=" --theme $themes"
     fi
 
-    CMD="${BIN_PHP} ${BIN_MAGE} setup:static-content:deploy $themes"
+    local languages=""
+    if [ ! -z "$DEPLOY_LANGUAGES" ]
+    then
+        languages=$(echo ${DEPLOY_LANGUAGES} | sed 's/,/ /g')
+    fi
+    CMD="${BIN_PHP} ${BIN_MAGE} setup:static-content:deploy $themes $languages"
     runCommand
 }
 
