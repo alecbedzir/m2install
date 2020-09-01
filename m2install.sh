@@ -1621,13 +1621,12 @@ function warmCache()
 
 function afterDbInit()
 {
-    local script=""
-    if [[ "$MAGE_MODE" == "production" ]]
-    then
-        script="$(getScriptDirectory)/.after-db-init-production.sql"
-    else    
-        script="$(getScriptDirectory)/.after-db-init.sql"
+    local script_name=".after-db-init.sql"
+    local script="$(getScriptDirectory)/$script_name"
+    if [ -f "$script" ]
+        script="$(getScriptDirectory)/../$script_name"
     fi
+    
     if [ -f "$script" ]
     then
         printString "==> Run after DB init SQL from $script"
