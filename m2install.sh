@@ -1144,8 +1144,8 @@ function deployStaticContent()
         themes=$(echo ${DEPLOY_THEMES} | sed 's/,/ --theme /g')
         themes=" --theme $themes"
     fi
+
     CMD="${BIN_PHP} ${BIN_MAGE} setup:static-content:deploy $themes"
-    
     runCommand
 }
 
@@ -1586,7 +1586,7 @@ function addStep()
 
 function setProductionMode()
 {
-    CMD="${BIN_PHP} ${BIN_MAGE} deploy:mode:set production"
+    CMD="${BIN_PHP} ${BIN_MAGE} deploy:mode:set production --skip-compilation"
     runCommand
 }
 
@@ -1654,6 +1654,10 @@ function afterInstall()
     then
         setProductionMode
     fi
+
+    compileDi
+    deployStaticContent
+    
     executePostDeployScript "$(getScriptDirectory)/post-deploy"
     executePostDeployScript "$HOME/post-deploy"
     setFilesystemPermission
