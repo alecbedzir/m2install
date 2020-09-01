@@ -516,7 +516,7 @@ function getConfigFiles()
         do x=$(dirname "$x");\
             find "$x" -maxdepth 1 -name "${CONFIG_NAME}";\
         done) | sed '1!G;h;$!d')
-    configPaths=("${configPaths[@]}" "${recursiveconfigs[@]}" "./$(basename ${CONFIG_NAME})" "$(getScriptDir)/master.conf");
+    configPaths=("${configPaths[@]}" "${recursiveconfigs[@]}" "./$(basename ${CONFIG_NAME})" "$(getScriptDir)/master.conf" "../$(basename ${CONFIG_NAME})");
     echo "${configPaths[@]} "
     return 0;
 }
@@ -1305,9 +1305,9 @@ function runComposerInstall()
 {
     if [[ "$MAGE_MODE" == "production" ]]
     then
-        CMD="${BIN_PHP} ${BIN_COMPOSER} install --no-dev"
+        CMD="${BIN_PHP} ${BIN_COMPOSER} install --no-dev --optimize-autoloader"
     else
-        CMD="${BIN_PHP} ${BIN_COMPOSER} install"
+        CMD="${BIN_PHP} ${BIN_COMPOSER} install --optimize-autoloader"
     fi
     runCommand
 }
@@ -1657,7 +1657,7 @@ function afterInstall()
 
     compileDi
     deployStaticContent
-    
+
     executePostDeployScript "$(getScriptDirectory)/post-deploy"
     executePostDeployScript "$HOME/post-deploy"
     setFilesystemPermission
