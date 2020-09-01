@@ -52,6 +52,8 @@ SOURCE=
 FORCE=
 MAGE_MODE=dev
 
+DEPLOY_THEMES=
+
 BIN_PHP=php
 BIN_MAGE="-d memory_limit=2G bin/magento"
 BIN_COMPOSER=$(command -v composer)
@@ -438,6 +440,7 @@ function printConfirmation()
     printString "DB NAME: ${DB_NAME}"
     printString "DB PASSWORD: ${DB_PASSWORD}"
     printString "MAGE MODE: ${MAGE_MODE}"
+    printString "DEPLOY_THEMES: ${DEPLOY_THEMES}"
     printString "BACKEND FRONTNAME: ${BACKEND_FRONTNAME}"
     printString "ADMIN NAME: ${ADMIN_NAME}"
     printString "ADMIN PASSWORD: ${ADMIN_PASSWORD}"
@@ -564,6 +567,7 @@ INSTALL_B2B=$INSTALL_B2B
 GIT_CE_REPO=$GIT_CE_REPO
 GIT_EE_REPO=$GIT_EE_REPO
 MAGE_MODE=$MAGE_MODE
+DEPLOY_THEMES=$DEPLOY_THEMES
 BACKEND_FRONTNAME=$BACKEND_FRONTNAME
 ADMIN_NAME=$ADMIN_NAME
 ADMIN_PASSWORD=$ADMIN_PASSWORD
@@ -1131,7 +1135,17 @@ function deployStaticContent()
         return;
     fi
 
-    CMD="${BIN_PHP} ${BIN_MAGE} setup:static-content:deploy"
+    local themes=""
+    if [ ! -z "$DEPLOY_THEMES" ]
+    then
+        #
+        # Quick hack to transform comma separated list of themes into " --theme Magento/backend --theme Vendor/mytheme ..."
+        #
+        themes=$(echo ${DEPLOY_THEMES} | sed 's/,/ --theme /g')
+        themes=" --theme $themes"
+    fi
+    CMD="${BIN_PHP} ${BIN_MAGE} setup:static-content:deploy $themes"
+    
     runCommand
 }
 
