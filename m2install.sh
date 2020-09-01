@@ -1624,9 +1624,10 @@ function afterDbInit()
     local script_name=".after-db-init.sql"
     local script="$(getScriptDirectory)/$script_name"
     if [ -f "$script" ]
+    then
         script="$(getScriptDirectory)/../$script_name"
     fi
-    
+
     if [ -f "$script" ]
     then
         printString "==> Run after DB init SQL from $script"
