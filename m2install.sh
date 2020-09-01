@@ -1289,7 +1289,12 @@ function linkEnterpriseEdition()
 
 function runComposerInstall()
 {
-    CMD="${BIN_PHP} ${BIN_COMPOSER} install"
+    if [[ "$MAGE_MODE" == "production" ]]
+    then
+        CMD="${BIN_PHP} ${BIN_COMPOSER} install --no-dev"
+    else
+        CMD="${BIN_PHP} ${BIN_COMPOSER} install"
+    fi
     runCommand
 }
 
@@ -1598,6 +1603,24 @@ function executePostDeployScript()
 function warmCache()
 {
     echo "Cache warm up ${BASE_URL}. Response code: $(curl -s -l -I ${BASE_URL} | head -n 1 | awk '{print $2}')"
+}
+
+function afterDbInit()
+{
+    local script=""
+    if [[ "$MAGE_MODE" == "production" ]]
+    then
+        script="$(getScriptDirectory)/after-db-init-production"
+    else    
+        script="$(getScriptDirectory)/after-db-init"
+    fi
+    if [ -f "$script" ]
+    then
+        printString "==> Run the after DB init script $script"
+        source "$script";
+        printString "==> After DB init script has been finished"
+    fi
+    return 0;
 }
 
 function afterInstall()
@@ -1979,6 +2002,7 @@ function main()
     else
         magentoInstallAction;
     fi
+    addStep "afterDbInit"
     addStep "afterInstall"
     if [ -z "$REMOTE_DB" ]
     then
