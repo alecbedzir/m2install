@@ -1610,15 +1610,26 @@ function afterDbInit()
     local script=""
     if [[ "$MAGE_MODE" == "production" ]]
     then
-        script="$(getScriptDirectory)/after-db-init-production"
+        script="$(getScriptDirectory)/after-db-init-production.sql"
     else    
-        script="$(getScriptDirectory)/after-db-init"
+        script="$(getScriptDirectory)/after-db-init.sql"
     fi
     if [ -f "$script" ]
     then
-        printString "==> Run the after DB init script $script"
-        source "$script";
-        printString "==> After DB init script has been finished"
+        printString "==> Run after DB init SQL from $script"
+        #
+        # Adapted from https://stackoverflow.com/a/10929511
+        #
+        while IFS='' read -r line || [[ -n "$line" ]]; do
+            if [ ! -z "$line" ]
+            then
+                printString 
+                #SQLQUERY=$(printf '%q' $line)
+                SQLQUERY="USE ${DB_NAME}; $line"
+                mysqlQuery
+            fi
+        done < "$script"
+        printString "==> After DB init SQL has been finished"
     fi
     return 0;
 }
