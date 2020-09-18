@@ -52,7 +52,7 @@ Options:
     --ee                                 Install Enterprise Edition.
     --b2b                                Install B2B Extension.
     -v, --version                        Magento Version - it means: Composer version or GIT Branch
-    --mode (dev, prod)                   Magento Mode. Dev mode does not generate static & di content.
+    --mode (developer, production)       Magento Mode. Mode "developer" does not generate static & di content.
     --quiet                              Quiet mode. Suppress output all commands
     --skip-post-deploy                   Skip the post deploy script if it is exist
     --step (restore_code,restore_db      Specify step through comma without spaces.
@@ -118,7 +118,7 @@ DB PARAM: root@localhost
 DB NAME: root_ee202
 Sample Data will NOT be installed.
 Magento EE will NOT be installed.
-In order to generate static/di content, add mode param: m2install.sh --mode prod
+In order to generate static/di content, add mode param: m2install.sh --mode production
 Are you sure? [y/N] 
 ```
 
