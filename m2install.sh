@@ -50,7 +50,7 @@ GIT_B2B_PATH=magento2b2b
 
 SOURCE=
 FORCE=
-MAGE_MODE=dev
+MAGE_MODE=developer
 
 DEPLOY_THEMES=
 DEPLOY_LANGUAGES=
@@ -1131,7 +1131,7 @@ EOF
 
 function deployStaticContent()
 {
-    if [[ "$MAGE_MODE" == "dev" ]]
+    if [[ "$MAGE_MODE" == "developer" ]]
     then
         return;
     fi
@@ -1157,7 +1157,7 @@ function deployStaticContent()
 
 function compileDi()
 {
-    if [[ "$MAGE_MODE" == "dev" ]]
+    if [[ "$MAGE_MODE" == "developer" ]]
     then
         return;
     fi
@@ -1698,7 +1698,7 @@ Options:
     --ee                                 Install Enterprise Edition.
     --b2b                                Install B2B Extension.
     -v, --version                        Magento Version - it means: Composer version or GIT Branch
-    --mode (dev, prod)                   Magento Mode. Dev mode does not generate static & di content.
+    --mode (developer, production)       Magento Mode. Mode "developer" does not generate static & di content.
     --quiet                              Quiet mode. Suppress output all commands
     --skip-post-deploy                   Skip the post deploy script if it is exist
     --step (restore_code,restore_db      Specify step through comma without spaces.
